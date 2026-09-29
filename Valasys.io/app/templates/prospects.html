@@ -1,0 +1,141 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+
+    <meta charset="UTF-8">
+
+    <meta
+        name="viewport"
+        content="width=device-width, initial-scale=1.0"
+    >
+
+    <title>Prospects | Valasys.io</title>
+
+    <style>
+
+        * {
+            box-sizing: border-box;
+        }
+
+        body {
+            margin: 0;
+            font-family:
+                Arial,
+                sans-serif;
+            background: #f4f7fb;
+            color: #172033;
+        }
+
+        .header {
+            height: 70px;
+            background: white;
+            border-bottom: 1px solid #e5e7eb;
+
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+
+            padding: 0 30px;
+        }
+
+        .logo {
+            font-size: 25px;
+            font-weight: 800;
+        }
+
+        .logo span {
+            color: #1769e0;
+        }
+
+        .content {
+            padding: 40px;
+        }
+
+        .back {
+            display: inline-block;
+            margin-bottom: 25px;
+
+            color: #1769e0;
+            text-decoration: none;
+            font-weight: 600;
+        }
+
+        .page-title {
+            font-size: 32px;
+            margin-bottom: 8px;
+        }
+
+        .description {
+            color: #64748b;
+            margin-bottom: 30px;
+        }
+
+        .database-box {
+            background: white;
+            border: 1px solid #e2e8f0;
+            border-radius: 12px;
+            padding: 30px;
+        }
+
+        .database-box h2 {
+            margin-top: 0;
+        }
+
+    </style>
+
+</head>
+
+
+<body>
+
+<header class="header">
+
+    <div class="logo">
+        Valasys<span>.io</span>
+    </div>
+
+    <div>
+        {{ user.email }}
+    </div>
+
+</header>
+
+
+<main class="content">
+
+    <a
+        href="/dashboard"
+        class="back"
+    >
+        ← Back to Dashboard
+    </a>
+
+
+    <h1 class="page-title">
+        Prospects
+    </h1>
+
+
+    <p class="description">
+        Manage your prospect database.
+    </p>
+
+
+    <div class="database-box">
+
+        <h2>
+            Prospects Database
+        </h2>
+
+        <p>
+            Your prospect data table will appear here.
+        </p>
+
+    </div>
+
+</main>
+
+</body>
+
+</html>

@@ -1,0 +1,638 @@
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+
+body {
+
+    font-family:
+        Inter,
+        -apple-system,
+        BlinkMacSystemFont,
+        "Segoe UI",
+        sans-serif;
+
+    background: #f4f7fb;
+
+    color: #172033;
+
+}
+
+
+/* =========================================
+   LAYOUT
+========================================= */
+
+.settings-layout {
+
+    min-height: 100vh;
+
+    display: flex;
+
+}
+
+
+/* =========================================
+   SIDEBAR
+========================================= */
+
+.settings-sidebar {
+
+    width: 220px;
+
+    background:
+        linear-gradient(
+            180deg,
+            #10243a,
+            #091625
+        );
+
+    min-height: 100vh;
+
+    position: fixed;
+
+    left: 0;
+
+    top: 0;
+
+    bottom: 0;
+
+    color: white;
+
+}
+
+
+.settings-logo {
+
+    height: 70px;
+
+    display: flex;
+
+    align-items: center;
+
+    padding: 0 22px;
+
+    font-size: 25px;
+
+    font-weight: 800;
+
+}
+
+
+.settings-logo span {
+
+    color: #3284ff;
+
+}
+
+
+.settings-sidebar nav {
+
+    padding: 10px;
+
+}
+
+
+.settings-sidebar nav a {
+
+    display: flex;
+
+    align-items: center;
+
+    gap: 14px;
+
+    height: 46px;
+
+    padding: 0 13px;
+
+    margin-bottom: 5px;
+
+    color: #d7e0ec;
+
+    text-decoration: none;
+
+    border-radius: 8px;
+
+    font-size: 14px;
+
+}
+
+
+.settings-sidebar nav a:hover {
+
+    background:
+        rgba(255,255,255,0.07);
+
+    color: white;
+
+}
+
+
+.settings-sidebar nav a.active {
+
+    background: #1769e0;
+
+    color: white;
+
+}
+
+
+.settings-sidebar nav i {
+
+    width: 20px;
+
+    text-align: center;
+
+}
+
+
+/* =========================================
+   MAIN
+========================================= */
+
+.settings-main {
+
+    margin-left: 220px;
+
+    width: calc(100% - 220px);
+
+    min-height: 100vh;
+
+}
+
+
+.settings-header {
+
+    height: 100px;
+
+    background: white;
+
+    border-bottom: 1px solid #e2e8f0;
+
+    padding: 0 40px;
+
+    display: flex;
+
+    align-items: center;
+
+    justify-content: space-between;
+
+}
+
+
+.settings-header h1 {
+
+    font-size: 28px;
+
+    margin-bottom: 5px;
+
+}
+
+
+.settings-header p {
+
+    color: #64748b;
+
+    font-size: 14px;
+
+}
+
+
+.settings-user {
+
+    display: flex;
+
+    align-items: center;
+
+    gap: 10px;
+
+    font-size: 14px;
+
+    font-weight: 600;
+
+}
+
+
+.settings-avatar {
+
+    width: 36px;
+
+    height: 36px;
+
+    border-radius: 50%;
+
+    background:
+        linear-gradient(
+            135deg,
+            #45349a,
+            #5d50ad
+        );
+
+    color: white;
+
+    display: flex;
+
+    align-items: center;
+
+    justify-content: center;
+
+}
+
+
+/* =========================================
+   CONTENT
+========================================= */
+
+.settings-content {
+
+    padding: 40px;
+
+    max-width: 850px;
+
+}
+
+
+/* =========================================
+   CARD
+========================================= */
+
+.settings-card {
+
+    background: white;
+
+    border: 1px solid #e2e8f0;
+
+    border-radius: 14px;
+
+    padding: 30px;
+
+    box-shadow:
+        0 4px 15px
+        rgba(15,23,42,0.04);
+
+}
+
+
+.settings-card-header {
+
+    display: flex;
+
+    align-items: center;
+
+    gap: 15px;
+
+    margin-bottom: 30px;
+
+}
+
+
+.settings-card-icon {
+
+    width: 48px;
+
+    height: 48px;
+
+    border-radius: 10px;
+
+    background: #eaf2ff;
+
+    color: #1769e0;
+
+    display: flex;
+
+    align-items: center;
+
+    justify-content: center;
+
+    font-size: 20px;
+
+}
+
+
+.settings-card-header h2 {
+
+    font-size: 20px;
+
+    margin-bottom: 5px;
+
+}
+
+
+.settings-card-header p {
+
+    color: #718096;
+
+    font-size: 13px;
+
+}
+
+
+/* =========================================
+   ALERTS
+========================================= */
+
+.alert {
+
+    padding: 13px 15px;
+
+    border-radius: 8px;
+
+    display: flex;
+
+    align-items: center;
+
+    gap: 10px;
+
+    margin-bottom: 25px;
+
+    font-size: 14px;
+
+}
+
+
+.alert.error {
+
+    color: #b91c1c;
+
+    background: #fff1f2;
+
+    border: 1px solid #fecdd3;
+
+}
+
+
+.alert.success {
+
+    color: #15803d;
+
+    background: #f0fdf4;
+
+    border: 1px solid #bbf7d0;
+
+}
+
+
+/* =========================================
+   FORM
+========================================= */
+
+.form-group {
+
+    margin-bottom: 23px;
+
+}
+
+
+.form-group label {
+
+    display: block;
+
+    font-size: 14px;
+
+    font-weight: 600;
+
+    margin-bottom: 8px;
+
+}
+
+
+.password-field {
+
+    position: relative;
+
+}
+
+
+.password-field input {
+
+    width: 100%;
+
+    height: 50px;
+
+    border: 1px solid #d8e0ea;
+
+    border-radius: 9px;
+
+    padding: 0 50px 0 14px;
+
+    font-size: 14px;
+
+    outline: none;
+
+    transition:
+        border-color 0.2s,
+        box-shadow 0.2s;
+
+}
+
+
+.password-field input:focus {
+
+    border-color: #1769e0;
+
+    box-shadow:
+        0 0 0 3px
+        rgba(23,105,224,0.1);
+
+}
+
+
+.toggle-password {
+
+    position: absolute;
+
+    right: 14px;
+
+    top: 50%;
+
+    transform: translateY(-50%);
+
+    border: none;
+
+    background: transparent;
+
+    color: #64748b;
+
+    cursor: pointer;
+
+}
+
+
+.form-group small {
+
+    display: block;
+
+    margin-top: 7px;
+
+    color: #94a3b8;
+
+    font-size: 12px;
+
+}
+
+
+/* =========================================
+   BUTTONS
+========================================= */
+
+.form-actions {
+
+    display: flex;
+
+    justify-content: flex-end;
+
+    gap: 12px;
+
+    margin-top: 30px;
+
+}
+
+
+.cancel-button {
+
+    height: 46px;
+
+    padding: 0 20px;
+
+    display: flex;
+
+    align-items: center;
+
+    justify-content: center;
+
+    border-radius: 8px;
+
+    border: 1px solid #d8e0ea;
+
+    color: #475569;
+
+    text-decoration: none;
+
+    font-size: 14px;
+
+    font-weight: 600;
+
+}
+
+
+.cancel-button:hover {
+
+    background: #f8fafc;
+
+}
+
+
+.update-button {
+
+    height: 46px;
+
+    padding: 0 20px;
+
+    border: none;
+
+    border-radius: 8px;
+
+    background: #1769e0;
+
+    color: white;
+
+    font-size: 14px;
+
+    font-weight: 600;
+
+    cursor: pointer;
+
+    display: flex;
+
+    align-items: center;
+
+    gap: 8px;
+
+}
+
+
+.update-button:hover {
+
+    background: #125bc5;
+
+}
+
+
+/* =========================================
+   MOBILE
+========================================= */
+
+@media (max-width: 800px) {
+
+    .settings-sidebar {
+
+        display: none;
+
+    }
+
+
+    .settings-main {
+
+        margin-left: 0;
+
+        width: 100%;
+
+    }
+
+
+    .settings-header {
+
+        padding: 0 20px;
+
+    }
+
+
+    .settings-content {
+
+        padding: 25px 18px;
+
+    }
+
+
+    .settings-card {
+
+        padding: 22px;
+
+    }
+
+}
+
+
+@media (max-width: 500px) {
+
+    .settings-header h1 {
+
+        font-size: 23px;
+
+    }
+
+
+    .settings-user span {
+
+        display: none;
+
+    }
+
+
+    .form-actions {
+
+        flex-direction: column-reverse;
+
+    }
+
+
+    .cancel-button,
+    .update-button {
+
+        width: 100%;
+
+    }
+
+}

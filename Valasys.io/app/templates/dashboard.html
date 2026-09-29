@@ -1,0 +1,574 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+
+    <meta
+        name="viewport"
+        content="width=device-width, initial-scale=1.0"
+    >
+
+    <title>Dashboard | Valasys.io</title>
+
+    <link
+        rel="stylesheet"
+        href="{{ url_for('static', path='css/dashboard.css') }}"
+    >
+
+    <!-- Icons -->
+    <link
+        rel="stylesheet"
+        href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css"
+    >
+</head>
+
+
+<body>
+
+<div class="app-container">
+
+    <!-- =====================================================
+         SIDEBAR
+    ====================================================== -->
+
+    <aside class="sidebar">
+
+        <div class="sidebar-brand">
+            <span>Valasys</span><strong>.io</strong>
+        </div>
+
+
+        <nav class="sidebar-nav">
+
+            <a
+                href="/dashboard"
+                class="nav-item active"
+            >
+                <i class="fa-solid fa-house"></i>
+                <span>Dashboard</span>
+            </a>
+
+
+            <a
+                href="/prospects"
+                class="nav-item"
+            >
+                <i class="fa-solid fa-users"></i>
+                <span>Prospects</span>
+            </a>
+
+
+            <a
+                href="/companies"
+                class="nav-item"
+            >
+                <i class="fa-solid fa-building"></i>
+                <span>Companies</span>
+            </a>
+
+
+            <a
+                href="/campaigns"
+                class="nav-item"
+            >
+                <i class="fa-regular fa-paper-plane"></i>
+                <span>Campaigns</span>
+            </a>
+
+
+            <a
+                href="/analytics"
+                class="nav-item"
+            >
+                <i class="fa-solid fa-chart-line"></i>
+                <span>Analytics</span>
+            </a>
+
+
+            <a
+                href="/settings"
+                class="nav-item"
+            >
+                <i class="fa-solid fa-gear"></i>
+                <span>Settings</span>
+            </a>
+
+        </nav>
+
+    </aside>
+
+
+    <!-- =====================================================
+         MAIN AREA
+    ====================================================== -->
+
+    <div class="main-area">
+
+
+        <!-- TOP NAVBAR -->
+
+        <header class="topbar">
+
+            <div class="mobile-menu">
+                <i class="fa-solid fa-bars"></i>
+            </div>
+
+
+            <div class="topbar-spacer"></div>
+
+
+            <div class="topbar-right">
+
+                <!-- Notification -->
+
+                <button
+                    class="notification-btn"
+                    title="Notifications"
+                >
+
+                    <i class="fa-regular fa-bell"></i>
+
+                    <span class="notification-dot"></span>
+
+                </button>
+
+
+                <!-- User -->
+
+                <div class="profile-wrapper">
+
+    <button
+        class="user-menu"
+        id="profileButton"
+        type="button"
+        aria-haspopup="true"
+        aria-expanded="false"
+        aria-controls="profileDropdown"
+    >
+
+        <div class="user-avatar">
+            {% set name_parts = (user.name or user.email.split('@')[0]).split() %}
+            {{ name_parts[0][0:1] | upper }}{% if name_parts | length > 1 %}{{ name_parts[-1][0:1] | upper }}{% endif %}
+        </div>
+
+        <div class="user-info">
+
+            <span class="user-name">
+                {{ user.name | default(user.email.split('@')[0]) }}
+            </span>
+
+            <i class="fa-solid fa-chevron-down"></i>
+
+        </div>
+
+    </button>
+
+
+    <div
+        class="profile-dropdown"
+        id="profileDropdown"
+    >
+
+        <div class="profile-dropdown-header">
+
+            <div class="dropdown-avatar">
+                {% set name_parts = (user.name or user.email.split('@')[0]).split() %}
+                {{ name_parts[0][0:1] | upper }}{% if name_parts | length > 1 %}{{ name_parts[-1][0:1] | upper }}{% endif %}
+            </div>
+
+            <div>
+
+                <strong>
+                    {{ user.name | default(user.email.split('@')[0]) }}
+                </strong>
+
+                <span>
+                    {{ user.email }}
+                </span>
+
+            </div>
+
+        </div>
+
+
+        <div class="dropdown-divider"></div>
+
+
+        <a
+            href="/settings"
+            class="dropdown-item"
+        >
+
+            <i class="fa-solid fa-gear"></i>
+
+            <span>
+                Settings
+            </span>
+
+        </a>
+
+
+        <div class="dropdown-divider"></div>
+
+
+        <form
+            method="POST"
+            action="/logout"
+        >
+
+            <button
+                type="submit"
+                class="dropdown-item logout-item"
+            >
+
+                <i class="fa-solid fa-right-from-bracket"></i>
+
+                <span>
+                    Logout
+                </span>
+
+            </button>
+
+        </form>
+
+    </div>
+
+</div>
+
+            </div>
+
+        </header>
+
+
+        <!-- =================================================
+             DASHBOARD CONTENT
+        ================================================== -->
+
+        <main class="dashboard-content">
+
+
+            <!-- Welcome -->
+
+            <section class="welcome-section">
+
+                <h1>
+                    Welcome to
+                    <span>Valasys.io</span>
+                </h1>
+
+                <p>
+                    Manage your prospects and companies data
+                    in one place.
+                </p>
+
+            </section>
+
+
+            <!-- =================================================
+                 DATABASE CARDS
+            ================================================== -->
+
+            <section class="database-grid">
+
+
+                <!-- PROSPECTS -->
+
+                <a
+                    href="/prospects"
+                    class="database-card prospects-card"
+                >
+
+                    <div class="card-content">
+
+                        <div class="card-icon prospects-icon">
+
+                            <i class="fa-solid fa-users"></i>
+
+                        </div>
+
+
+                        <div class="card-text">
+
+                            <h2>
+                                Prospects
+                            </h2>
+
+                            <p>
+                                View and manage your
+                                prospect database.
+                            </p>
+
+                        </div>
+
+                    </div>
+
+
+                    <div class="card-arrow">
+
+                        <i class="fa-solid fa-chevron-right"></i>
+
+                    </div>
+
+
+                    <div class="card-decoration"></div>
+
+                </a>
+
+
+                <!-- COMPANIES -->
+
+                <a
+                    href="/companies"
+                    class="database-card companies-card"
+                >
+
+                    <div class="card-content">
+
+                        <div class="card-icon companies-icon">
+
+                            <i class="fa-solid fa-building"></i>
+
+                        </div>
+
+
+                        <div class="card-text">
+
+                            <h2>
+                                Companies
+                            </h2>
+
+                            <p>
+                                View and manage your
+                                companies database.
+                            </p>
+
+                        </div>
+
+                    </div>
+
+
+                    <div class="card-arrow">
+
+                        <i class="fa-solid fa-chevron-right"></i>
+
+                    </div>
+
+
+                    <div class="card-decoration"></div>
+
+                </a>
+
+
+            </section>
+
+
+            <!-- =================================================
+                 QUICK STATS
+            ================================================== -->
+
+            <section class="stats-section">
+
+                <div class="stats-card">
+
+                    <div class="stats-icon blue">
+                        <i class="fa-solid fa-users"></i>
+                    </div>
+
+                    <div>
+                        <span class="stats-label">
+                            Total Prospects
+                        </span>
+
+                        <h3>
+                            {{ prospect_count | default(0) }}
+                        </h3>
+                    </div>
+
+                </div>
+
+
+                <div class="stats-card">
+
+                    <div class="stats-icon green">
+                        <i class="fa-solid fa-building"></i>
+                    </div>
+
+                    <div>
+                        <span class="stats-label">
+                            Total Companies
+                        </span>
+
+                        <h3>
+                            {{ company_count | default(0) }}
+                        </h3>
+                    </div>
+
+                </div>
+
+
+                <div class="stats-card">
+
+                    <div class="stats-icon purple">
+                        <i class="fa-solid fa-paper-plane"></i>
+                    </div>
+
+                    <div>
+                        <span class="stats-label">
+                            Campaigns
+                        </span>
+
+                        <h3>
+                            {{ campaign_count | default(0) }}
+                        </h3>
+                    </div>
+
+                </div>
+
+
+                <div class="stats-card">
+
+                    <div class="stats-icon orange">
+                        <i class="fa-solid fa-chart-line"></i>
+                    </div>
+
+                    <div>
+                        <span class="stats-label">
+                            Analytics
+                        </span>
+
+                        <h3>
+                            View
+                        </h3>
+                    </div>
+
+                </div>
+
+            </section>
+
+        </main>
+
+    </div>
+
+</div>
+
+
+<!-- =========================================================
+     MOBILE SIDEBAR SCRIPT
+========================================================= -->
+
+<script>
+
+    /* =========================================
+       MOBILE SIDEBAR
+    ========================================= */
+
+    const menuButton =
+        document.querySelector(".mobile-menu");
+
+    const sidebar =
+        document.querySelector(".sidebar");
+
+
+    if (menuButton && sidebar) {
+
+        menuButton.addEventListener(
+            "click",
+            function () {
+
+                sidebar.classList.toggle(
+                    "mobile-open"
+                );
+
+            }
+        );
+
+    }
+
+
+    /* =========================================
+       PROFILE DROPDOWN
+    ========================================= */
+
+    const profileButton =
+        document.getElementById(
+            "profileButton"
+        );
+
+    const profileDropdown =
+        document.getElementById(
+            "profileDropdown"
+        );
+
+
+    if (
+        profileButton &&
+        profileDropdown
+    ) {
+
+        function setProfileDropdownOpen(isOpen) {
+            profileDropdown.classList.toggle(
+                "show",
+                isOpen
+            );
+            profileButton.setAttribute(
+                "aria-expanded",
+                String(isOpen)
+            );
+        }
+
+        profileButton.addEventListener(
+            "click",
+            function (event) {
+
+                event.stopPropagation();
+
+                setProfileDropdownOpen(
+                    !profileDropdown.classList.contains("show")
+                );
+
+            }
+        );
+
+
+        document.addEventListener(
+            "click",
+            function (event) {
+
+                if (
+                    !profileDropdown.contains(
+                        event.target
+                    ) &&
+                    !profileButton.contains(
+                        event.target
+                    )
+                ) {
+
+                    setProfileDropdownOpen(false);
+
+                }
+
+            }
+        );
+
+        document.addEventListener(
+            "keydown",
+            function (event) {
+                if (
+                    event.key === "Escape" &&
+                    profileDropdown.classList.contains("show")
+                ) {
+                    setProfileDropdownOpen(false);
+                    profileButton.focus();
+                }
+            }
+        );
+
+    }
+
+</script>
+
+
+</body>
+
+</html>

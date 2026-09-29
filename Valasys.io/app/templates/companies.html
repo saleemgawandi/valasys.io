@@ -1,0 +1,1106 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+
+    <meta charset="UTF-8">
+
+    <meta
+        name="viewport"
+        content="width=device-width, initial-scale=1.0"
+    >
+
+    <title>
+        Companies | Valasys.io
+    </title>
+
+
+    <link
+        rel="stylesheet"
+        href="{{ url_for(
+            'static',
+            path='css/companies.css'
+        ) }}"
+    >
+
+
+    <link
+        rel="stylesheet"
+        href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css"
+    >
+
+</head>
+
+
+<body>
+
+
+<div class="app-container">
+
+
+    <!-- =====================================================
+         SIDEBAR
+    ====================================================== -->
+
+    <aside class="sidebar">
+
+        <div class="sidebar-brand">
+
+            <span>Valasys</span><strong>.io</strong>
+
+        </div>
+
+
+        <nav class="sidebar-nav">
+
+
+            <a
+                href="/dashboard"
+                class="nav-item"
+            >
+
+                <i class="fa-solid fa-house"></i>
+
+                <span>
+                    Dashboard
+                </span>
+
+            </a>
+
+
+            <a
+                href="/prospects"
+                class="nav-item"
+            >
+
+                <i class="fa-solid fa-users"></i>
+
+                <span>
+                    Prospects
+                </span>
+
+            </a>
+
+
+            <a
+                href="/companies"
+                class="nav-item active"
+            >
+
+                <i class="fa-solid fa-building"></i>
+
+                <span>
+                    Companies
+                </span>
+
+            </a>
+
+
+            <a
+                href="/campaigns"
+                class="nav-item"
+            >
+
+                <i class="fa-regular fa-paper-plane"></i>
+
+                <span>
+                    Campaigns
+                </span>
+
+            </a>
+
+
+            <a
+                href="/analytics"
+                class="nav-item"
+            >
+
+                <i class="fa-solid fa-chart-line"></i>
+
+                <span>
+                    Analytics
+                </span>
+
+            </a>
+
+
+            <a
+                href="/settings"
+                class="nav-item"
+            >
+
+                <i class="fa-solid fa-gear"></i>
+
+                <span>
+                    Settings
+                </span>
+
+            </a>
+
+        </nav>
+
+    </aside>
+
+
+
+    <!-- =====================================================
+         MAIN
+    ====================================================== -->
+
+    <div class="main-area">
+
+
+        <!-- TOP BAR -->
+
+        <header class="topbar">
+
+
+            <div class="mobile-menu">
+
+                <i class="fa-solid fa-bars"></i>
+
+            </div>
+
+
+            <div class="topbar-spacer"></div>
+
+
+            <div class="topbar-right">
+
+
+                <button
+                    class="notification-btn"
+                    type="button"
+                >
+
+                    <i class="fa-regular fa-bell"></i>
+
+                    <span class="notification-dot"></span>
+
+                </button>
+
+
+                <div class="profile-wrapper">
+
+                    <button
+                        class="user-menu"
+                        id="profileButton"
+                        type="button"
+                        aria-haspopup="true"
+                        aria-expanded="false"
+                        aria-controls="profileDropdown"
+                    >
+
+                        <div class="user-avatar">
+                            {% set profile_name = user.name or user.email.split('@')[0] %}
+                            {% set name_parts = profile_name.split() %}
+                            {{ name_parts[0][0:1] | upper }}{% if name_parts | length > 1 %}{{ name_parts[-1][0:1] | upper }}{% endif %}
+                        </div>
+
+                        <div class="user-info">
+                            <span class="user-name">
+                                {{ user.name | default(user.email.split('@')[0]) }}
+                            </span>
+                            <i class="fa-solid fa-chevron-down"></i>
+                        </div>
+
+                    </button>
+
+                    <div
+                        class="profile-dropdown"
+                        id="profileDropdown"
+                    >
+                        <div class="profile-dropdown-header">
+                            <div class="dropdown-avatar">
+                                {% set dropdown_name_parts = (user.name or user.email.split('@')[0]).split() %}
+                                {{ dropdown_name_parts[0][0:1] | upper }}{% if dropdown_name_parts | length > 1 %}{{ dropdown_name_parts[-1][0:1] | upper }}{% endif %}
+                            </div>
+                            <div>
+                                <strong>
+                                    {{ user.name | default(user.email.split('@')[0]) }}
+                                </strong>
+                                <span>{{ user.email }}</span>
+                            </div>
+                        </div>
+
+                        <div class="dropdown-divider"></div>
+
+                        <a href="/settings" class="dropdown-item">
+                            <i class="fa-solid fa-gear"></i>
+                            <span>Settings</span>
+                        </a>
+
+                        <div class="dropdown-divider"></div>
+
+                        <form method="POST" action="/logout">
+                            <button type="submit" class="dropdown-item logout-item">
+                                <i class="fa-solid fa-right-from-bracket"></i>
+                                <span>Logout</span>
+                            </button>
+                        </form>
+                    </div>
+
+                </div>
+
+            </div>
+
+        </header>
+
+
+
+        <!-- =====================================================
+             PAGE CONTENT
+        ====================================================== -->
+
+        <main class="page-content">
+
+
+            <!-- PAGE TITLE -->
+
+            <div class="page-header">
+
+
+                <div>
+
+                    <h1>
+                        Companies
+                    </h1>
+
+                    <p>
+                        Manage your companies database
+                    </p>
+
+                </div>
+
+
+                <button
+                    class="add-company-button"
+                    id="company-action-button"
+                    type="button"
+                >
+
+                    <i class="fa-solid fa-plus" id="company-action-icon"></i>
+
+                    <span id="company-action-label">Add Company</span>
+
+                </button>
+
+            </div>
+
+
+
+            <!-- =================================================
+                 FILTER BAR
+            ================================================== -->
+
+            <form
+                method="GET"
+                action="/companies"
+                class="filter-card"
+            >
+
+
+                <!-- SEARCH -->
+
+                <div class="search-actions">
+
+                    {% if csv_filter_id %}
+                    <input type="hidden" name="csv_filter" value="{{ csv_filter_id }}">
+                    {% endif %}
+
+                    <div class="search-box">
+
+                        <i
+                            class="fa-solid fa-magnifying-glass"
+                        ></i>
+
+
+                        <input
+                            type="text"
+                            name="search"
+                            value="{{ search }}"
+                            placeholder="Search company name or Website"
+                        >
+
+                    </div>
+
+                    <button
+                        type="button"
+                        class="csv-upload-trigger"
+                        id="open-csv-dialog"
+                        aria-haspopup="dialog"
+                    >
+                        <i class="fa-solid fa-upload"></i>
+                        Upload CSV
+                    </button>
+
+                </div>
+
+
+                <!-- COUNTRY -->
+
+                <select
+                    name="country"
+                    class="country-select"
+                    onchange="this.form.submit()"
+                >
+
+                    <option value="">
+                        All Countries
+                    </option>
+
+
+                    {% for item in countries %}
+
+                    <option
+                        value="{{ item }}"
+                        {% if selected_country == item %}
+                        selected
+                        {% endif %}
+                    >
+
+                        {{ item }}
+
+                    </option>
+
+                    {% endfor %}
+
+                </select>
+
+
+
+                <!-- RESET -->
+
+                <a
+                    href="/companies"
+                    class="reset-button"
+                >
+
+                    Reset
+
+                </a>
+
+
+            </form>
+
+            {% if csv_error %}
+            <div class="csv-filter-message" role="alert">{{ csv_error }}</div>
+            {% endif %}
+
+            {% if csv_filter_id %}
+            <div class="csv-filter-active">
+                <span>CSV filter: <strong>{{ csv_filter_label }}</strong></span>
+                <a href="/companies">Clear CSV filter</a>
+            </div>
+            {% endif %}
+
+
+
+            <!-- =================================================
+                 TABLE
+            ================================================== -->
+
+            <div class="table-card">
+
+
+                <div class="table-wrapper">
+
+                    <table>
+
+
+                        <thead>
+
+                            <tr>
+
+                                <th class="selection-column">
+                                    <button
+                                        type="button"
+                                        id="company-selection-trigger"
+                                        class="selection-trigger"
+                                        aria-label="Choose which companies to select"
+                                        aria-haspopup="dialog"
+                                        aria-expanded="false"
+                                        aria-controls="company-selection-popup"
+                                    >
+                                        <i class="fa-regular fa-square selection-state-icon" aria-hidden="true"></i>
+                                        <i class="fa-solid fa-chevron-down" aria-hidden="true"></i>
+                                    </button>
+                                </th>
+
+                                <th>
+                                    Company Logo
+                                </th>
+
+                                <th>
+                                    Company Name
+                                </th>
+
+                                <th>
+                                    Headquarter Location
+                                </th>
+
+                                <th>
+                                    Facebook
+                                </th>
+
+                                <th>
+                                    LinkedIn
+                                </th>
+
+                                <th>
+                                    Phone
+                                </th>
+
+                                <th>
+                                    Twitter
+                                </th>
+
+                                <th>
+                                    Website
+                                </th>
+
+                                <th>
+                                    Revenue
+                                </th>
+
+                                <th>
+                                    Actions
+                                </th>
+
+                            </tr>
+
+                        </thead>
+
+
+                        <tbody>
+
+
+                        {% for company in companies %}
+
+
+                        <tr>
+
+
+                            <!-- SELECTION -->
+
+                            <td class="selection-column">
+                                <input
+                                    type="checkbox"
+                                    class="company-select"
+                                    value="{{ company._id }}"
+                                    data-company-number="{{ start_number + loop.index0 }}"
+                                    aria-label="Select {{ company.Company_Name or 'company' }}"
+                                >
+                            </td>
+
+
+
+                            <!-- LOGO -->
+
+                            <td>
+
+                                {% if company.Company_logo %}
+
+                                <img
+                                    src="{{ company.Company_logo }}"
+                                    alt="{{ company.Company_Name or 'Company' }}"
+                                    class="company-logo"
+                                    onerror="this.style.display='none';this.nextElementSibling.style.display='flex';"
+                                >
+
+
+                                <div
+                                    class="logo-fallback"
+                                    style="display:none;"
+                                >
+
+                                    <i class="fa-solid fa-building"></i>
+
+                                </div>
+
+                                {% else %}
+
+                                <div class="logo-fallback">
+
+                                    <i class="fa-solid fa-building"></i>
+
+                                </div>
+
+                                {% endif %}
+
+                            </td>
+
+
+
+                            <!-- COMPANY NAME -->
+
+                            <td>
+
+                                <span class="company-name">
+
+                                    {{ company.Company_Name or "N/A" }}
+
+                                </span>
+
+                            </td>
+
+
+
+                            <!-- HEADQUARTER -->
+
+                            <td>
+
+                                <div class="location">
+
+                                    {{ company.Headquarter_Location or "N/A" }}
+
+                                </div>
+
+                            </td>
+
+
+
+                            <!-- FACEBOOK -->
+
+                            <td>
+
+                                {% if company.Facebook %}
+
+                                <a
+                                    href="{{ company.Facebook }}"
+                                    target="_blank"
+                                    rel="noopener noreferrer"
+                                    class="social-icon facebook"
+                                >
+
+                                    <i class="fa-brands fa-facebook-f"></i>
+
+                                </a>
+
+                                {% else %}
+
+                                <span class="empty-value">
+                                    —
+                                </span>
+
+                                {% endif %}
+
+                            </td>
+
+
+
+                            <!-- LINKEDIN -->
+
+                            <td>
+
+                                {% if company.LinkedIn %}
+
+                                <a
+                                    href="{{ company.LinkedIn }}"
+                                    target="_blank"
+                                    rel="noopener noreferrer"
+                                    class="social-icon linkedin"
+                                >
+
+                                    <i class="fa-brands fa-linkedin-in"></i>
+
+                                </a>
+
+                                {% else %}
+
+                                <span class="empty-value">
+                                    —
+                                </span>
+
+                                {% endif %}
+
+                            </td>
+
+
+
+                            <!-- PHONE -->
+
+                            <td>
+
+                                {% if company.Phone %}
+
+                                <a
+                                    href="tel:{{ company.Phone }}"
+                                    class="phone-link"
+                                >
+
+                                    <i class="fa-solid fa-phone"></i>
+
+                                    {{ company.Phone }}
+
+                                </a>
+
+                                {% else %}
+
+                                <span class="empty-value">
+                                    —
+                                </span>
+
+                                {% endif %}
+
+                            </td>
+
+
+
+                            <!-- TWITTER -->
+
+                            <td>
+
+                                {% if company.Twitter %}
+
+                                <a
+                                    href="{{ company.Twitter }}"
+                                    target="_blank"
+                                    rel="noopener noreferrer"
+                                    class="social-icon twitter"
+                                >
+
+                                    <i class="fa-brands fa-x-twitter"></i>
+
+                                </a>
+
+                                {% else %}
+
+                                <span class="empty-value">
+                                    —
+                                </span>
+
+                                {% endif %}
+
+                            </td>
+
+
+
+                            <!-- WEBSITE -->
+
+                            <td>
+
+                                {% if company.Website %}
+
+                                <a
+                                    href="{{ company.Website }}"
+                                    target="_blank"
+                                    rel="noopener noreferrer"
+                                    class="website-link"
+                                >
+
+                                    <i class="fa-solid fa-link"></i>
+
+                                    <span>
+                                        {{ company.Website | replace("https://", "") | replace("http://", "") | truncate(25, True, "...") }}
+                                    </span>
+
+                                </a>
+
+                                {% else %}
+
+                                <span class="empty-value">
+                                    —
+                                </span>
+
+                                {% endif %}
+
+                            </td>
+
+
+
+                            <!-- REVENUE -->
+
+                            <td>
+
+                                <span class="revenue">
+
+                                    {{ company.Revenue or "N/A" }}
+
+                                </span>
+
+                            </td>
+
+
+
+                            <!-- ACTIONS -->
+
+                            <td>
+
+                                <div class="action-menu">
+
+                                    <button
+                                        type="button"
+                                        class="action-button"
+                                        title="More"
+                                    >
+
+                                        <i class="fa-solid fa-ellipsis"></i>
+
+                                    </button>
+
+                                </div>
+
+                            </td>
+
+
+                        </tr>
+
+
+                        {% else %}
+
+
+                        <tr>
+
+                            <td
+                                colspan="11"
+                                class="empty-state"
+                            >
+
+                                <i
+                                    class="fa-solid fa-building"
+                                ></i>
+
+                                <h3>
+                                    No companies found
+                                </h3>
+
+                                <p>
+                                    No companies match your
+                                    search criteria.
+                                </p>
+
+                            </td>
+
+                        </tr>
+
+
+                        {% endfor %}
+
+
+                        </tbody>
+
+                    </table>
+
+                </div>
+
+
+
+                <!-- =================================================
+                     TABLE FOOTER
+                ================================================== -->
+
+                <div class="table-footer">
+
+
+                    <div class="showing-text">
+
+                        Showing
+
+                        <strong>
+                            {{ start_number }}
+                        </strong>
+
+                        to
+
+                        <strong>
+                            {{ end_number }}
+                        </strong>
+
+                        of
+
+                        <strong>
+                            {{ company_count }}
+                        </strong>
+
+                        companies
+
+                    </div>
+
+
+
+                    <!-- PAGINATION -->
+
+                    <div class="pagination">
+
+                        {% set csv_filter_param = '&csv_filter=' ~ csv_filter_id if csv_filter_id else '' %}
+
+
+                        <!-- PREVIOUS -->
+
+                        {% if current_page > 1 %}
+
+                        <a
+                            href="/companies?page={{ current_page - 1 }}{% if search %}&search={{ search | urlencode }}{% endif %}{% if selected_country %}&country={{ selected_country | urlencode }}{% endif %}{{ csv_filter_param }}"
+                            class="page-button"
+                        >
+
+                            <i
+                                class="fa-solid fa-chevron-left"
+                            ></i>
+
+                        </a>
+
+                        {% else %}
+
+                        <button
+                            class="page-button disabled"
+                            disabled
+                        >
+
+                            <i
+                                class="fa-solid fa-chevron-left"
+                            ></i>
+
+                        </button>
+
+                        {% endif %}
+
+
+
+                        <!-- PAGE NUMBERS -->
+
+                        {% set start_page = current_page - 2 %}
+
+                        {% if start_page < 1 %}
+
+                            {% set start_page = 1 %}
+
+                        {% endif %}
+
+
+                        {% set end_page = start_page + 4 %}
+
+                        {% if end_page > total_pages %}
+
+                            {% set end_page = total_pages %}
+
+                        {% endif %}
+
+
+                        {% if start_page > 1 %}
+
+                        <a
+                            href="/companies?page=1{% if search %}&search={{ search | urlencode }}{% endif %}{% if selected_country %}&country={{ selected_country | urlencode }}{% endif %}{{ csv_filter_param }}"
+                            class="page-button"
+                        >
+                            1
+                        </a>
+
+
+                        {% if start_page > 2 %}
+
+                        <span class="pagination-dots">
+                            ...
+                        </span>
+
+                        {% endif %}
+
+                        {% endif %}
+
+
+                        {% for page_number in range(start_page, end_page + 1) %}
+
+
+                        {% if page_number == current_page %}
+
+                        <span class="page-button active">
+                            {{ page_number }}
+                        </span>
+
+                        {% else %}
+
+                        <a
+                            href="/companies?page={{ page_number }}{% if search %}&search={{ search | urlencode }}{% endif %}{% if selected_country %}&country={{ selected_country | urlencode }}{% endif %}{{ csv_filter_param }}"
+                            class="page-button"
+                        >
+
+                            {{ page_number }}
+
+                        </a>
+
+                        {% endif %}
+
+
+                        {% endfor %}
+
+
+                        {% if end_page < total_pages %}
+
+                        {% if end_page < total_pages - 1 %}
+
+                        <span class="pagination-dots">
+                            ...
+                        </span>
+
+                        {% endif %}
+
+
+                        <a
+                            href="/companies?page={{ total_pages }}{% if search %}&search={{ search | urlencode }}{% endif %}{% if selected_country %}&country={{ selected_country | urlencode }}{% endif %}{{ csv_filter_param }}"
+                            class="page-button"
+                        >
+
+                            {{ total_pages }}
+
+                        </a>
+
+                        {% endif %}
+
+
+
+                        <!-- NEXT -->
+
+                        {% if current_page < total_pages %}
+
+                        <a
+                            href="/companies?page={{ current_page + 1 }}{% if search %}&search={{ search | urlencode }}{% endif %}{% if selected_country %}&country={{ selected_country | urlencode }}{% endif %}{{ csv_filter_param }}"
+                            class="page-button"
+                        >
+
+                            <i
+                                class="fa-solid fa-chevron-right"
+                            ></i>
+
+                        </a>
+
+                        {% else %}
+
+                        <button
+                            class="page-button disabled"
+                            disabled
+                        >
+
+                            <i
+                                class="fa-solid fa-chevron-right"
+                            ></i>
+
+                        </button>
+
+                        {% endif %}
+
+
+                    </div>
+
+                </div>
+
+            </div>
+
+
+        </main>
+
+    </div>
+
+</div>
+
+<dialog class="export-dialog" id="company-export-dialog" aria-labelledby="company-export-title">
+    <div class="export-dialog-header">
+        <div>
+            <p class="export-dialog-step">COMPANIES</p>
+            <h2 id="company-export-title">Export companies</h2>
+        </div>
+        <button type="button" class="csv-dialog-close" id="close-company-export" aria-label="Close export dialog">
+            <i class="fa-solid fa-xmark"></i>
+        </button>
+    </div>
+
+    <p class="export-dialog-description">
+        Export <strong id="company-export-count">0</strong> selected companies.
+    </p>
+
+    <label class="export-format-label" for="company-export-format">File format</label>
+    <select class="export-format-select" id="company-export-format">
+        <option value="xlsx">Excel (.xlsx)</option>
+        <option value="json">JSON (.json)</option>
+        <option value="csv">CSV (.csv)</option>
+    </select>
+
+    <p class="export-status" id="company-export-status" role="status" aria-live="polite"></p>
+
+    <div class="csv-dialog-actions">
+        <button type="button" class="csv-cancel-button" id="cancel-company-export">Cancel</button>
+        <button type="button" class="csv-done-button" id="confirm-company-export">
+            <i class="fa-solid fa-download" aria-hidden="true"></i>
+            Export
+        </button>
+    </div>
+</dialog>
+
+
+<div
+    class="selection-popup"
+    id="company-selection-popup"
+    role="dialog"
+    aria-label="Select companies"
+    data-total-count="{{ company_count }}"
+    hidden
+>
+    <fieldset class="selection-options">
+        <legend class="visually-hidden">Company selection method</legend>
+
+        <label class="selection-choice">
+            <input type="radio" name="company-selection-mode" value="page">
+            <span>Select this page</span>
+            <span class="selection-count-badge">{{ companies|length }}</span>
+        </label>
+
+        <label class="selection-choice">
+            <input type="radio" name="company-selection-mode" value="all">
+            <span>Select all</span>
+            <span class="selection-count-badge">{{ company_count }}</span>
+        </label>
+    </fieldset>
+
+    <div class="selection-popup-actions">
+        <button type="button" class="selection-cancel" id="cancel-company-selection">Cancel</button>
+        <button type="button" class="selection-apply" id="apply-company-selection">Apply</button>
+    </div>
+</div>
+
+<form id="csv-filter-form" action="/companies/csv-filter" method="post" enctype="multipart/form-data" hidden></form>
+
+<dialog class="csv-dialog" id="csv-dialog" aria-labelledby="csv-dialog-title">
+
+    <div class="csv-dialog-header">
+        <div>
+            <p class="csv-dialog-step">COMPANIES</p>
+            <h2 id="csv-dialog-title">Upload a CSV file</h2>
+        </div>
+        <button type="button" class="csv-dialog-close" id="close-csv-dialog" aria-label="Close upload dialog">
+            <i class="fa-solid fa-xmark"></i>
+        </button>
+    </div>
+
+    <p class="csv-dialog-description">Choose a CSV with column headers in its first row.</p>
+
+    <label class="csv-dropzone" id="csv-dropzone" for="csv-file">
+        <span class="csv-file-icon"><i class="fa-solid fa-file-csv"></i></span>
+        <strong>Drag and drop a CSV file here</strong>
+        <span>or <span class="csv-browse-link">browse files</span></span>
+        <input type="file" id="csv-file" name="file" form="csv-filter-form" accept=".csv,text/csv" hidden>
+    </label>
+
+    <p class="csv-upload-status" id="csv-upload-status" role="status" aria-live="polite"></p>
+
+    <section class="csv-preview" id="csv-preview" hidden>
+        <div class="csv-preview-heading">
+            <h3>File preview</h3>
+            <span id="csv-row-count"></span>
+        </div>
+        <div class="csv-preview-table-wrap">
+            <table class="csv-preview-table" id="csv-preview-table"></table>
+        </div>
+    </section>
+
+    <div class="csv-dialog-actions">
+        <button type="button" class="csv-cancel-button" id="cancel-csv-upload">Cancel</button>
+        <button type="submit" form="csv-filter-form" class="csv-done-button" id="finish-csv-upload" disabled>Apply filter</button>
+    </div>
+
+</dialog>
+
+<script src="{{ url_for('static', path='js/companies.js') }}"></script>
+
+</body>
+
+</html>

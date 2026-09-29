@@ -1,0 +1,442 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+
+    <meta charset="UTF-8">
+
+    <meta
+        name="viewport"
+        content="width=device-width, initial-scale=1.0"
+    >
+
+    <title>Settings | Valasys.io</title>
+
+
+    <link
+        rel="stylesheet"
+        href="{{ url_for(
+            'static',
+            path='css/settings.css'
+        ) }}"
+    >
+
+
+    <link
+        rel="stylesheet"
+        href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css"
+    >
+
+</head>
+
+
+<body>
+
+
+<div class="settings-layout">
+
+
+    <!-- SIDEBAR -->
+
+    <aside class="settings-sidebar">
+
+        <div class="settings-logo">
+
+            Valasys<span>.io</span>
+
+        </div>
+
+
+        <nav>
+
+            <a href="/dashboard">
+
+                <i class="fa-solid fa-house"></i>
+
+                Dashboard
+
+            </a>
+
+
+            <a href="/prospects">
+
+                <i class="fa-solid fa-users"></i>
+
+                Prospects
+
+            </a>
+
+
+            <a href="/companies">
+
+                <i class="fa-solid fa-building"></i>
+
+                Companies
+
+            </a>
+
+
+            <a href="/campaigns">
+
+                <i class="fa-regular fa-paper-plane"></i>
+
+                Campaigns
+
+            </a>
+
+
+            <a href="/analytics">
+
+                <i class="fa-solid fa-chart-line"></i>
+
+                Analytics
+
+            </a>
+
+
+            <a
+                href="/settings"
+                class="active"
+            >
+
+                <i class="fa-solid fa-gear"></i>
+
+                Settings
+
+            </a>
+
+        </nav>
+
+    </aside>
+
+
+    <!-- MAIN -->
+
+    <main class="settings-main">
+
+
+        <header class="settings-header">
+
+            <div>
+
+                <h1>
+                    Settings
+                </h1>
+
+                <p>
+                    Manage your account settings.
+                </p>
+
+            </div>
+
+
+            <div class="settings-user">
+
+                <div class="settings-avatar">
+                    {% set name_parts = (user.name or user.email.split('@')[0]).split() %}
+                    {{ name_parts[0][0:1] | upper }}{% if name_parts | length > 1 %}{{ name_parts[-1][0:1] | upper }}{% endif %}
+                </div>
+
+                <span>
+                    {{ user.name | default(user.email.split('@')[0]) }}
+                </span>
+
+            </div>
+
+        </header>
+
+
+        <section class="settings-content">
+
+
+            <!-- CHANGE PASSWORD -->
+
+            <div class="settings-card">
+
+                <div class="settings-card-header">
+
+                    <div class="settings-card-icon">
+
+                        <i class="fa-solid fa-lock"></i>
+
+                    </div>
+
+
+                    <div>
+
+                        <h2>
+                            Change Password
+                        </h2>
+
+                        <p>
+                            Update your account password.
+                        </p>
+
+                    </div>
+
+                </div>
+
+
+                {% if error %}
+
+                <div class="alert error">
+
+                    <i class="fa-solid fa-circle-exclamation"></i>
+
+                    <span>
+                        {{ error }}
+                    </span>
+
+                </div>
+
+                {% endif %}
+
+
+                {% if success %}
+
+                <div class="alert success">
+
+                    <i class="fa-solid fa-circle-check"></i>
+
+                    <span>
+                        {{ success }}
+                    </span>
+
+                </div>
+
+                {% endif %}
+
+
+                <form
+                    method="POST"
+                    action="/settings/change-password"
+                    id="changePasswordForm"
+                >
+
+
+                    <!-- OLD PASSWORD -->
+
+                    <div class="form-group">
+
+                        <label for="old_password">
+
+                            Current Password
+
+                        </label>
+
+
+                        <div class="password-field">
+
+                            <input
+                                type="password"
+                                id="old_password"
+                                name="old_password"
+                                placeholder="Enter your current password"
+                                required
+                            >
+
+
+                            <button
+                                type="button"
+                                class="toggle-password"
+                                data-target="old_password"
+                            >
+
+                                <i class="fa-regular fa-eye"></i>
+
+                            </button>
+
+                        </div>
+
+                    </div>
+
+
+                    <!-- NEW PASSWORD -->
+
+                    <div class="form-group">
+
+                        <label for="new_password">
+
+                            New Password
+
+                        </label>
+
+
+                        <div class="password-field">
+
+                            <input
+                                type="password"
+                                id="new_password"
+                                name="new_password"
+                                placeholder="Enter your new password"
+                                minlength="8"
+                                required
+                            >
+
+
+                            <button
+                                type="button"
+                                class="toggle-password"
+                                data-target="new_password"
+                            >
+
+                                <i class="fa-regular fa-eye"></i>
+
+                            </button>
+
+                        </div>
+
+
+                        <small>
+                            Password must contain at least 8 characters.
+                        </small>
+
+                    </div>
+
+
+                    <!-- CONFIRM PASSWORD -->
+
+                    <div class="form-group">
+
+                        <label for="confirm_password">
+
+                            Confirm New Password
+
+                        </label>
+
+
+                        <div class="password-field">
+
+                            <input
+                                type="password"
+                                id="confirm_password"
+                                name="confirm_password"
+                                placeholder="Confirm your new password"
+                                minlength="8"
+                                required
+                            >
+
+
+                            <button
+                                type="button"
+                                class="toggle-password"
+                                data-target="confirm_password"
+                            >
+
+                                <i class="fa-regular fa-eye"></i>
+
+                            </button>
+
+                        </div>
+
+                    </div>
+
+
+                    <div class="form-actions">
+
+                        <a
+                            href="/dashboard"
+                            class="cancel-button"
+                        >
+                            Cancel
+                        </a>
+
+
+                        <button
+                            type="submit"
+                            class="update-button"
+                        >
+
+                            <i class="fa-solid fa-check"></i>
+
+                            Update Password
+
+                        </button>
+
+                    </div>
+
+
+                </form>
+
+            </div>
+
+
+        </section>
+
+    </main>
+
+</div>
+
+
+<script>
+
+    const toggleButtons =
+        document.querySelectorAll(
+            ".toggle-password"
+        );
+
+
+    toggleButtons.forEach(
+        function(button) {
+
+            button.addEventListener(
+                "click",
+                function() {
+
+                    const targetId =
+                        button.dataset.target;
+
+                    const input =
+                        document.getElementById(
+                            targetId
+                        );
+
+                    const icon =
+                        button.querySelector(
+                            "i"
+                        );
+
+
+                    if (
+                        input.type ===
+                        "password"
+                    ) {
+
+                        input.type =
+                            "text";
+
+                        icon.classList.remove(
+                            "fa-eye"
+                        );
+
+                        icon.classList.add(
+                            "fa-eye-slash"
+                        );
+
+                    } else {
+
+                        input.type =
+                            "password";
+
+                        icon.classList.remove(
+                            "fa-eye-slash"
+                        );
+
+                        icon.classList.add(
+                            "fa-eye"
+                        );
+
+                    }
+
+                }
+            );
+
+        }
+    );
+
+</script>
+
+
+</body>
+
+</html>
